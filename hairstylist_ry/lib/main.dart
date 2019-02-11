@@ -62,14 +62,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Positioned(
-                top: 20.0,
-                left: 12.0,
-                right: 5.0,
+                top: 15.0,
+                left: 0.00,
+                right: 0.00,
                 child: Container(
-                  height: 60.0,
+                  height: 65.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
+                      SizedBox(width: 20.0),
                       getDate(18, 'Tue'),
                       SizedBox(width: 20.0),
                       getDate(19, 'Wed'),
@@ -79,6 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       getDate(21, 'Fri'),
                       SizedBox(width: 20.0),
                       getDate(22, 'Sat'),
+                      SizedBox(width: 20.0),
+                      getDate(23, 'Sun'),
                     ],
                   ),
                 ),
@@ -125,35 +128,36 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 25.0),
+          SizedBox(height: 40.0),
           Container(
             height: 42.0,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                getTime('11.00'),
                 SizedBox(width: 20.0),
-                getTime('12.30'),
+                getTime('11:00'),
                 SizedBox(width: 20.0),
-                getTime('13.30'),
+                getTime('12:30'),
                 SizedBox(width: 20.0),
-                getTime('15.00'),
+                getTime('13:30'),
                 SizedBox(width: 20.0),
-                getTime('16.30'),
+                getTime('15:00'),
+                SizedBox(width: 20.0),
+                getTime('16:30'),
               ],
             ),
           ),
-          SizedBox(height: 25.0),
+          SizedBox(height: 45.0),
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {print('appontment booked');},
               child: Container(
                 height: 42.0,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7.0),
-                    color: Colors.black),
+                    color: Colors.green[300]),
                 child: Center(
                   child: Text(
                     'BOOK',
@@ -312,8 +316,8 @@ class _MyHomePageState extends State<MyHomePage> {
       curve: Curves.easeIn,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0), color: switchColor(date)),
-      width: 60.0,
-      height: 60.0,
+      width: 65.0,
+      height: 65.0,
       child: InkWell(
         onTap: () {
           selectDate(date);
@@ -321,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Center(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 7.0),
+              SizedBox(height: 10.0),
               Text(
                 date.toString(),
                 style: TextStyle(

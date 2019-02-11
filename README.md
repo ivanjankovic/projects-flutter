@@ -32,6 +32,9 @@ https://github.com/2d-inc/Flare-Flutter/tree/master/example/teddy
 https://medium.com/flutter-community/bmi-calculator-in-flutter-part-5-animated-slider-hint-1aa55ae44ba0
 https://github.com/mohak1283/Flutter-UIs-Collection/tree/master/Bill-Payments-Screen-UI
 
+## if you can recreate this
+https://www.youtube.com/channel/UCtWyVkPpb8An90SNDTNF0Pg/videos
+
 ## news
 https://us17.campaign-archive.com/home/?u=c8d8d18b6e2c6316ddc1d48a0&id=47548a283b
 
