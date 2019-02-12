@@ -5,6 +5,7 @@ https://flutter.io/docs/get-started/codelab
 
 udemy SG - 16. RxDart for Reactive Programming - done
 
+Learn Flutter & Dart to Build iOS & Android Apps Course by Maximilian Schwarzmüller on Udemy ```section 2 last complited lesson:  Creating the "Product Manager" Widget```
 
 ## projects-flutter
 
@@ -34,6 +35,9 @@ https://github.com/mohak1283/Flutter-UIs-Collection/tree/master/Bill-Payments-Sc
 
 ## if you can recreate this
 https://www.youtube.com/channel/UCtWyVkPpb8An90SNDTNF0Pg/videos
+
+## run android emualtor withouth AS
+emulator @{image_name}_API_28
 
 ## news
 https://us17.campaign-archive.com/home/?u=c8d8d18b6e2c6316ddc1d48a0&id=47548a283b
