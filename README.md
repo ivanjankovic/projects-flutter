@@ -3,9 +3,9 @@
 ## learning progres
 https://flutter.io/docs/get-started/codelab
 
-udemy SG - 16. RxDart for Reactive Programming - done
+Dart and Flutter The Complete Developer's Guide Course by Stephen Grider on Udemy ```last complited lesson: Section 16 RxDart for Reactive Programming```
 
-Learn Flutter & Dart to Build iOS & Android Apps Course by Maximilian Schwarzmüller on Udemy ```section 2 last complited lesson:  Creating the "Product Manager" Widget```
+Learn Flutter & Dart to Build iOS & Android Apps Course by Maximilian Schwarzmüller on Udemy ```last complited lesson: Section 2 Creating the "Product Manager" Widget```
 
 ## projects-flutter
 
