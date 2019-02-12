@@ -5,22 +5,34 @@ class Products extends StatelessWidget {
 
   Products(this.products);
 
-  @override
-  Widget build(BuildContext context) {
-    
-    return Column(
-      children: products
-          .map(
-            (element) => Card(
+  Widget _buildProductItem(BuildContext context, index) {
+    return Card(
                   child: Column(
                     children: [
                       Image.asset('assets/food.jpg'),
-                      Text(element),
+                      Text(products[index]),
                     ],
                   ),
-                ),
-          )
-          .toList(),
-    );
+                );
+  }
+
+  Widget _buildProductList() {
+    Widget productCards;
+    if (products.length > 0) {
+      productCards = ListView.builder(
+        itemBuilder: _buildProductItem,
+        itemCount: products.length,
+      );
+    } else {
+      productCards = Center(
+        child: Text('No Products found, please add some!'),
+      );
+    }
+    return productCards;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildProductList();
   }
 }

@@ -5,9 +5,9 @@ https://flutter.io/docs/get-started/flutter-for/web-devs
 https://flutter.io/docs/codelabs > part 2
 codelabs.developers.google.com
 
-Dart and Flutter The Complete Developer's Guide Course by Stephen Grider on Udemy ```last complited lesson: Section 16 - RxDart for Reactive Programming```
+Dart and Flutter The Complete Developer's Guide Course by `Stephen Grider` on Udemy ```last complited: Section 16 - RxDart for Reactive Programming```
 
-Learn Flutter & Dart to Build iOS & Android Apps Course by Maximilian Schwarzmüller on Udemy ```last complited lesson: Section 2 - What is Flutter? > Lesson - Creating the "Product Manager" Widget```
+Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last complited: Section 5 - Working with Lists & Conditionals```
 
 ## projects-flutter
 
