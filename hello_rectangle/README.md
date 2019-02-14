@@ -1,6 +1,6 @@
-## first_app
+# hello_rectangle
 
-This app is a part of the Learn Flutter & Dart to Build iOS & Android Apps Course by Maximilian Schwarzmüller.
+A new Flutter project.
 
 ## Getting Started
 

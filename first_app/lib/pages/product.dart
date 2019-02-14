@@ -55,10 +55,8 @@ class ProductPage extends StatelessWidget {
             ),
             RaisedButton(
               color: Theme.of(context).accentColor,
-              child: Text(
-                'DELETE',
-                style: TextStyle(color: Colors.white70),
-              ),
+              child: Text('DELETE'),
+              textColor: Colors.white70,
               // onPressed: () => Navigator.pop(context, true),
               onPressed: () => _showWarningDialog(context),
             )
