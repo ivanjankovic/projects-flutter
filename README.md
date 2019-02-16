@@ -7,7 +7,25 @@ codelabs.developers.google.com
 
 Dart and Flutter The Complete Developer's Guide Course by `Stephen Grider` on Udemy ```last complited: Section 16 - RxDart for Reactive Programming```
 
-Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last complited: Section 8 - Diving Deeper Into Widgets, Lesson: 11. Centering Input Fields```
+Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last complited: Section 8 - Diving Deeper Into Widgets```
+
+
+section:durations
+9:57
+10:19
+11:138
+12:123
+13:140
+14:120
+15:126
+16:73
+17:46
+18:22
+19:35
+20:43
+________
+15h:42min
+
 
 ## projects-flutter
 
