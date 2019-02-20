@@ -1,6 +1,6 @@
 
 
-## learning progress
+## edu progress
 https://flutter.io/docs/get-started/flutter-for/web-devs
 https://flutter.io/docs/codelabs > part 2
 codelabs.developers.google.com
@@ -44,7 +44,7 @@ https://classroom.udacity.com/courses/ud0352
 http://fluttersamples.com/ 
 https://github.com/brianegan/flutter_architecture_samples 
 
-## more rescues
+## more resaurces
 https://github.com/Solido/awesome-flutter
 
 ## recreate, examine the code of this app
