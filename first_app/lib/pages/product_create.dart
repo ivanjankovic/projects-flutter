@@ -17,7 +17,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   double _priceValue;
 
   Widget _buildTitleTextField() {
-    return TextField(
+    return TextFormField (
       decoration: InputDecoration(labelText: 'Product Title'),
       onChanged: (String value) {
         setState(() {
@@ -29,7 +29,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   }
 
   Widget _buildDescriptionTExtField() {
-    return TextField(
+    return TextFormField(
       maxLines: 4,
       decoration: InputDecoration(labelText: 'Product Description'),
       onChanged: (String value) {
@@ -42,7 +42,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   }
 
   Widget _buildPriceTextField() {
-    return TextField(
+    return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Product Price'),
       onChanged: (String value) {
@@ -70,32 +70,27 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final targetWidht = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = (deviceWidth - targetWidht) / 2;
+
     return Container(
       margin: EdgeInsets.all(15.0),
-      child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: targetPadding),
-        children: <Widget>[
-          _buildTitleTextField(),
-          _buildDescriptionTExtField(),
-          _buildPriceTextField(),
-          SizedBox(
-            height: 15.0,
-          ),
-          // GestureDetector(
-          //   onTap: _submitForm,
-          //   child: Container(
-          //     color: Colors.green,
-          //     padding: EdgeInsets.all(7.0),
-          //     child: Text('My Button'),
-          //   ),
-          // )
-          RaisedButton(
-            child: Text('Save'),
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white70,
-            onPressed: _submitForm,
-          ),
-        ],
+      child: Form(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: targetPadding),
+          children: <Widget>[
+            _buildTitleTextField(),
+            _buildDescriptionTExtField(),
+            _buildPriceTextField(),
+            SizedBox(
+              height: 15.0,
+            ),
+            RaisedButton(
+              child: Text('Save'),
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white70,
+              onPressed: _submitForm,
+            ),
+          ],
+        ),
       ),
     );
   }
