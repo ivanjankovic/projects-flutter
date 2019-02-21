@@ -5,8 +5,9 @@ class ProductEditPage extends StatefulWidget {
   final Function updateProduct;
   final Map<String, dynamic> product;
   final int productIndex;
-  
-  ProductEditPage({this.addProduct, this.updateProduct, this.product, this.productIndex});
+
+  ProductEditPage(
+      {this.addProduct, this.updateProduct, this.product, this.productIndex});
 
   @override
   State<StatefulWidget> createState() {
@@ -59,7 +60,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Product Price'),
-      initialValue: widget.product == null ? '' : widget.product['price'].toString(),
+      initialValue:
+          widget.product == null ? '' : widget.product['price'].toString(),
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -87,10 +89,24 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Widget pageContent = _buildPageContent(context);
+
+    return widget.product == null
+        ? pageContent
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Edit Product'),
+            ),
+            body: pageContent,
+          );
+  }
+
+  Widget _buildPageContent(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final targetWidht = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = (deviceWidth - targetWidht) / 2;
-    final Widget pageContent = GestureDetector(
+
+    return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
@@ -117,13 +133,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
           ),
         ),
       ),
-    );
-
-    return widget.product == null ? pageContent :Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Product'),
-      ),
-      body: pageContent,
     );
   }
 }
