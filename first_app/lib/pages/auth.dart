@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+
+import '../scoped-models/main.dart';
+
 class AuthPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -8,9 +12,12 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue;
-  String _passwordValue;
-  bool _acceptTerms = false;
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'acceptTerms': false
+  };
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -21,53 +28,58 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  Widget _buildEmailTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'E-Mail', filled: true, fillColor: Colors.white),
+      keyboardType: TextInputType.emailAddress,
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+      },
+      onSaved: (String value) {
+        _formData['email'] = value;
+      },
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Password', filled: true, fillColor: Colors.white),
+      obscureText: true,
+      validator: (String value) {
+        if (value.isEmpty || value.length < 6) {
+          return 'Password invalid';
+        }
+      },
+      onSaved: (String value) {
+        _formData['password'] = value;
+      },
+    );
+  }
+
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
-      value: _acceptTerms,
+      value: _formData['acceptTerms'],
       onChanged: (bool value) {
         setState(() {
-          _acceptTerms = value;
+          _formData['acceptTerms'] = value;
         });
       },
       title: Text('Accept Terms'),
     );
   }
 
-  Widget _buildPasswordTextField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: 'Password',
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      obscureText: true,
-      onChanged: (String value) {
-        setState(() {
-          _passwordValue = value;
-        });
-      },
-    );
-  }
-
-  Widget _buildEmailTextField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: 'E-Mail',
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      keyboardType: TextInputType.emailAddress,
-      onChanged: (String value) {
-        setState(() {
-          _emailValue = value;
-        });
-      },
-    );
-  }
-
-  void _submitForm() {
-    print(_emailValue);
-    print(_passwordValue);
+  void _submitForm(Function login) {
+    if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
+      return;
+    }
+    _formKey.currentState.save();
+    login(_formData['email'], _formData['password']);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -75,7 +87,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -89,20 +101,27 @@ class _AuthPageState extends State<AuthPage> {
           child: SingleChildScrollView(
             child: Container(
               width: targetWidth,
-              child: Column(
-                children: <Widget>[
-                  _buildEmailTextField(),
-                  SizedBox(height: 12.0),
-                  _buildPasswordTextField(),
-                  _buildAcceptSwitch(),
-                  SizedBox(height: 10.0),
-                  RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    child: Text('LOGIN'),
-                    onPressed: _submitForm,
-                  ),
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    _buildEmailTextField(),
+                    SizedBox(height: 12.0),
+                    _buildPasswordTextField(),
+                    _buildAcceptSwitch(),
+                    SizedBox(height: 10.0),
+                    ScopedModelDescendant<MainModel>(
+                      builder: (BuildContext context, Widget child, MainModel model) {
+                        return RaisedButton(
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          child: Text('LOGIN'),
+                          onPressed: () => _submitForm(model.login),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -110,5 +129,4 @@ class _AuthPageState extends State<AuthPage> {
       ),
     );
   }
-
 }
