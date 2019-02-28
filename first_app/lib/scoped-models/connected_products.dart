@@ -19,7 +19,9 @@ mixin ConnectedProductsModel on Model {
       'title': title,
       'description': description,
       'image': image,
-      'price': price
+      'price': price,
+      'userEmail': _autenticatedUser.email,
+      'userId': _autenticatedUser.id,
     };
     http
         .post('https://products-flutter-course-ms.firebaseio.com/products.json',
@@ -72,16 +74,16 @@ mixin ProductsModel on ConnectedProductsModel {
 
   void updateProduct(
       String title, String description, String image, double price) {
-    // final Product updatedProduct = Product(
-    //   title: title,
-    //   description: description,
-    //   image: image,
-    //   price: price,
-    //   userEmail: selectedProduct.userEmail,
-    //   userId: selectedProduct.userId,
-    // );
-    // _products[selectedProductIndex] = updatedProduct;
-    // notifyListeners();
+    final Product updatedProduct = Product(
+      title: title,
+      description: description,
+      image: image,
+      price: price,
+      userEmail: selectedProduct.userEmail,
+      userId: selectedProduct.userId,
+    );
+    _products[selectedProductIndex] = updatedProduct;
+    notifyListeners();
   }
 
   void deleteProduct() {
@@ -90,26 +92,44 @@ mixin ProductsModel on ConnectedProductsModel {
   }
 
   void fetchProducts() {
-    http.get('https://products-flutter-course-ms.firebaseio.com/products.json').then((http.Response response) {
-      print('hello');
-      print(json.decode(response.body));
+    http
+        .get('https://products-flutter-course-ms.firebaseio.com/products.json')
+        .then((http.Response response) {
+      final List<Product> fetchedProductList = [];
+      final Map<String, dynamic> productListData =
+          json.decode(response.body);
+      productListData
+          .forEach((String productId, dynamic productData) {
+        final Product product = Product(
+          id: productId,
+          title: productData['title'],
+          description: productData['description'],
+          image: productData['image'],
+          price: productData['price'],
+          userEmail: productData['userEmail'],
+          userId: productData['userId'],
+        );
+        fetchedProductList.add(product);
+      });
+      _products =fetchedProductList;
+      notifyListeners();
     });
   }
 
   void toggleProductFavorite() {
-    // final bool isCurrentlyFavorite = selectedProduct.isFavorite;
-    // final bool newFavoriteStatus = !isCurrentlyFavorite;
+    final bool isCurrentlyFavorite = selectedProduct.isFavorite;
+    final bool newFavoriteStatus = !isCurrentlyFavorite;
 
-    // final Product updatedProduct = Product(
-    //   title: selectedProduct.title,
-    //   description: selectedProduct.description,
-    //   price: selectedProduct.price,
-    //   image: selectedProduct.image,
-    //   isFavorite: newFavoriteStatus,
-    //   userEmail: selectedProduct.userEmail,
-    //   userId: selectedProduct.userId,
-    // );
-    // _products[selectedProductIndex] = updatedProduct;
+    final Product updatedProduct = Product(
+      title: selectedProduct.title,
+      description: selectedProduct.description,
+      price: selectedProduct.price,
+      image: selectedProduct.image,
+      isFavorite: newFavoriteStatus,
+      userEmail: selectedProduct.userEmail,
+      userId: selectedProduct.userId,
+    );
+    _products[selectedProductIndex] = updatedProduct;
     notifyListeners();
   }
 
