@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
+import '../widgets/helpers/ensure_visible.dart';
 import '../models/product.dart';
 import '../scoped-models/main.dart';
 
@@ -19,53 +20,86 @@ class _ProductEditPageState extends State<ProductEditPage> {
     'price': null,
     'image': 'assets/food.jpg'
   };
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _titleFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+  final _priceFocusNode = FocusNode();
 
   Widget _buildTitleTextField(Product product) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Product Title'),
-      initialValue: product == null ? '' : product.title,
-      validator: (String value) {
-        if (value.isEmpty || value.length < 5) {
-          return 'Title is requred and should be at least 5 characters long';
-        }
-      },
-      onSaved: (String value) {
-        _formData['title'] = value;
-      },
+    return EnsureVisibleWhenFocused(
+      focusNode: _titleFocusNode,
+      child: TextFormField(
+        focusNode: _titleFocusNode,
+        decoration: InputDecoration(labelText: 'Product Title'),
+        initialValue: product == null ? '' : product.title,
+        validator: (String value) {
+          if (value.isEmpty || value.length < 5) {
+            return 'Title is requred and should be at least 5 characters long';
+          }
+        },
+        onSaved: (String value) {
+          _formData['title'] = value;
+        },
+      ),
     );
   }
 
-  Widget _buildDescriptionTExtField(Product product) {
-    return TextFormField(
-      maxLines: 4,
-      decoration: InputDecoration(labelText: 'Product Description'),
-      initialValue: product == null ? '' : product.description,
-      validator: (String value) {
-        if (value.isEmpty || value.length < 10) {
-          return 'Description is requred and should be at least 10 characters long';
-        }
-      },
-      onSaved: (String value) {
-        _formData['description'] = value;
-      },
+  Widget _buildDescriptionTextField(Product product) {
+    return EnsureVisibleWhenFocused(
+      focusNode: _descriptionFocusNode,
+      child: TextFormField(
+        focusNode: _descriptionFocusNode,
+        maxLines: 4,
+        decoration: InputDecoration(labelText: 'Product Description'),
+        initialValue: product == null ? '' : product.description,
+        validator: (String value) {
+          if (value.isEmpty || value.length < 10) {
+            return 'Description is requred and should be at least 10 characters long';
+          }
+        },
+        onSaved: (String value) {
+          _formData['description'] = value;
+        },
+      ),
     );
   }
 
   Widget _buildPriceTextField(Product product) {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: 'Product Price'),
-      initialValue: product == null ? '' : product.price.toString(),
-      validator: (String value) {
-        if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
-          return 'Price is requred and should be number.';
-        }
-      },
-      onSaved: (String value) {
-        _formData['price'] = double.parse(value);
+    return EnsureVisibleWhenFocused(
+      focusNode: _priceFocusNode,
+      child: TextFormField(
+        focusNode: _priceFocusNode,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(labelText: 'Product Price'),
+        initialValue: product == null ? '' : product.price.toString(),
+        validator: (String value) {
+          if (value.isEmpty ||
+              !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+            return 'Price is requred and should be number.';
+          }
+        },
+        onSaved: (String value) {
+          _formData['price'] = double.parse(value);
+        },
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return model.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : RaisedButton(
+                child: Text('Save'),
+                color: Theme.of(context).accentColor,
+                textColor: Colors.white70,
+                onPressed: () => _submitForm(
+                    model.addProduct,
+                    model.updateProduct,
+                    model.selectProduct,
+                    model.selectedProductIndex),
+              );
       },
     );
   }
@@ -87,7 +121,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             padding: EdgeInsets.symmetric(horizontal: targetPadding),
             children: <Widget>[
               _buildTitleTextField(product),
-              _buildDescriptionTExtField(product),
+              _buildDescriptionTextField(product),
               _buildPriceTextField(product),
               SizedBox(
                 height: 15.0,
@@ -113,37 +147,23 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _formData['description'],
         _formData['image'],
         _formData['price'],
-      );
+      ).then((_) => Navigator.pushReplacementNamed(context, '/products')
+          .then((_) => setSelectedProduct(null)));
     } else {
       updateProduct(
         _formData['title'],
         _formData['description'],
         _formData['image'],
         _formData['price'],
-      );
+      ).then((_) => Navigator.pushReplacementNamed(context, '/products')
+          .then((_) => setSelectedProduct(null)));
     }
-    Navigator.pushReplacementNamed(context, '/products')
-        .then((_) => setSelectedProduct(null));
-  }
-
-  Widget _buildSubmitButton(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget chiled, MainModel model) {
-        return RaisedButton(
-          child: Text('Save'),
-          color: Theme.of(context).accentColor,
-          textColor: Colors.white70,
-          onPressed: () => _submitForm(model.addProduct, model.updateProduct,
-              model.selectProduct, model.selectedProductIndex),
-        );
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget chiled, MainModel model) {
+      builder: (BuildContext context, Widget child, MainModel model) {
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
         return model.selectedProductIndex == null
