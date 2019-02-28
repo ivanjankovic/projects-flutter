@@ -7,7 +7,7 @@ codelabs.developers.google.com
 
 Dart and Flutter The Complete Developer's Guide Course by `Stephen Grider` on Udemy ```last completed: Section 16 - RxDart for Reactive Programming```
 
-Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last completed: Section 10 - ```
+Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last completed: Section 12 - Lesson 5 Getting Data form the server```
 
 
 section:durations

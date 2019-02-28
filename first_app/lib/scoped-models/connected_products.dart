@@ -21,18 +21,23 @@ mixin ConnectedProductsModel on Model {
       'image': image,
       'price': price
     };
-    http.post('https://products-flutter-course-ms.firebaseio.com/products.json',
-        body: json.encode(productsData));
-    final Product newProduct = Product(
-      title: title,
-      description: description,
-      image: image,
-      price: price,
-      userEmail: _autenticatedUser.email,
-      userId: _autenticatedUser.id,
-    );
-    _products.add(newProduct);
-    notifyListeners();
+    http
+        .post('https://products-flutter-course-ms.firebaseio.com/products.json',
+            body: json.encode(productsData))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Product newProduct = Product(
+        id: responseData['name'],
+        title: title,
+        description: description,
+        image: image,
+        price: price,
+        userEmail: _autenticatedUser.email,
+        userId: _autenticatedUser.id,
+      );
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 }
 
@@ -67,16 +72,16 @@ mixin ProductsModel on ConnectedProductsModel {
 
   void updateProduct(
       String title, String description, String image, double price) {
-    final Product updatedProduct = Product(
-      title: title,
-      description: description,
-      image: image,
-      price: price,
-      userEmail: selectedProduct.userEmail,
-      userId: selectedProduct.userId,
-    );
-    _products[selectedProductIndex] = updatedProduct;
-    notifyListeners();
+    // final Product updatedProduct = Product(
+    //   title: title,
+    //   description: description,
+    //   image: image,
+    //   price: price,
+    //   userEmail: selectedProduct.userEmail,
+    //   userId: selectedProduct.userId,
+    // );
+    // _products[selectedProductIndex] = updatedProduct;
+    // notifyListeners();
   }
 
   void deleteProduct() {
@@ -84,20 +89,27 @@ mixin ProductsModel on ConnectedProductsModel {
     notifyListeners();
   }
 
-  void toggleProductFavorite() {
-    final bool isCurrentlyFavorite = selectedProduct.isFavorite;
-    final bool newFavoriteStatus = !isCurrentlyFavorite;
+  void fetchProducts() {
+    http.get('https://products-flutter-course-ms.firebaseio.com/products.json').then((http.Response response) {
+      print('hello');
+      print(json.decode(response.body));
+    });
+  }
 
-    final Product updatedProduct = Product(
-      title: selectedProduct.title,
-      description: selectedProduct.description,
-      price: selectedProduct.price,
-      image: selectedProduct.image,
-      isFavorite: newFavoriteStatus,
-      userEmail: selectedProduct.userEmail,
-      userId: selectedProduct.userId,
-    );
-    _products[selectedProductIndex] = updatedProduct;
+  void toggleProductFavorite() {
+    // final bool isCurrentlyFavorite = selectedProduct.isFavorite;
+    // final bool newFavoriteStatus = !isCurrentlyFavorite;
+
+    // final Product updatedProduct = Product(
+    //   title: selectedProduct.title,
+    //   description: selectedProduct.description,
+    //   price: selectedProduct.price,
+    //   image: selectedProduct.image,
+    //   isFavorite: newFavoriteStatus,
+    //   userEmail: selectedProduct.userEmail,
+    //   userId: selectedProduct.userId,
+    // );
+    // _products[selectedProductIndex] = updatedProduct;
     notifyListeners();
   }
 
