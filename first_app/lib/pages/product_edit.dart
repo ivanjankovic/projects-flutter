@@ -85,7 +85,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  Widget _buildSubmitButton(BuildContext context) {
+  Widget _buildSubmitButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return model.isLoading
@@ -126,7 +126,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 15.0,
               ),
-              _buildSubmitButton(context),
+              _buildSubmitButton(),
             ],
           ),
         ),
@@ -147,25 +147,18 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _formData['description'],
         _formData['image'],
         _formData['price'],
-      ).then((_) => Navigator.pushReplacementNamed(context, '/products')
-          .then((_) => setSelectedProduct(null)));
-    } else {
-      updateProduct(
-        _formData['title'],
-        _formData['description'],
-        _formData['image'],
-        _formData['price'],
       ).then((bool success) {
         if (success) {
-          Navigator.pushReplacementNamed(context, '/products')
+          Navigator
+              .pushReplacementNamed(context, '/products')
               .then((_) => setSelectedProduct(null));
         } else {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Something went wrong!!!'),
-                  content: Text('Place try again!'),
+                  title: Text('Something went wrong'),
+                  content: Text('Please try again!'),
                   actions: <Widget>[
                     FlatButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -176,6 +169,15 @@ class _ProductEditPageState extends State<ProductEditPage> {
               });
         }
       });
+    } else {
+      updateProduct(
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
+      ).then((_) => Navigator
+          .pushReplacementNamed(context, '/products')
+          .then((_) => setSelectedProduct(null)));
     }
   }
 

@@ -12,49 +12,6 @@ mixin ConnectedProductsModel on Model {
   String _selProductId;
   User _authenticatedUser;
   bool _isLoading = false;
-
-  Future<bool> addProduct(
-      String title, String description, String image, double price) {
-    _isLoading = true;
-    notifyListeners();
-    final Map<String, dynamic> productData = {
-      'title': title,
-      'description': description,
-      'image':
-          'https://zxate13fczb17a0n833z2mnj-wpengine.netdna-ssl.com/wp-content/uploads/2015/01/chocolate-good-for-teeth2.jpg',
-      'price': price,
-      'userEmail': _authenticatedUser.email,
-      'userId': _authenticatedUser.id,
-    };
-    return http
-        .post('https://products-flutter-course-ms.firebaseio.com/products.json',
-            body: json.encode(productData))
-        .then((http.Response response) {
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        _isLoading = false;
-        notifyListeners();
-        return false;
-      }
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final Product newProduct = Product(
-        id: responseData['name'],
-        title: title,
-        description: description,
-        image: image,
-        price: price,
-        userEmail: _authenticatedUser.email,
-        userId: _authenticatedUser.id,
-      );
-      _products.add(newProduct);
-      _isLoading = false;
-      notifyListeners();
-      return true;
-      }).catchError((error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    });
-  }
 }
 
 mixin ProductsModel on ConnectedProductsModel {
@@ -85,6 +42,7 @@ mixin ProductsModel on ConnectedProductsModel {
     if (selectedProductId == null) {
       return null;
     }
+
     return _products.firstWhere((Product product) {
       return product.id == _selProductId;
     });
@@ -92,6 +50,50 @@ mixin ProductsModel on ConnectedProductsModel {
 
   bool get displayFavoritesOnly {
     return _showFavorites;
+  }
+
+  Future<bool> addProduct(
+      String title, String description, String image, double price) async {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> productData = {
+      'title': title,
+      'description': description,
+      'image':
+          'https://zxate13fczb17a0n833z2mnj-wpengine.netdna-ssl.com/wp-content/uploads/2015/01/chocolate-good-for-teeth2.jpg',
+      'price': price,
+      'userEmail': _authenticatedUser.email,
+      'userId': _authenticatedUser.id,
+    };
+    try {
+      final http.Response response = await http.post(
+          'https://products-flutter-course-ms.firebaseio.com/products.json',
+          body: json.encode(productData));
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Product newProduct = Product(
+        id: responseData['name'],
+        title: title,
+        description: description,
+        image: image,
+        price: price,
+        userEmail: _authenticatedUser.email,
+        userId: _authenticatedUser.id,
+      );
+      _products.add(newProduct);
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<bool> updateProduct(
@@ -125,7 +127,7 @@ mixin ProductsModel on ConnectedProductsModel {
       _products[selectedProductIndex] = updatedProduct;
       notifyListeners();
       return true;
-      }).catchError((error) {
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       return false;
@@ -145,7 +147,7 @@ mixin ProductsModel on ConnectedProductsModel {
       _isLoading = false;
       notifyListeners();
       return true;
-      }).catchError((error) {
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       return false;
@@ -181,7 +183,7 @@ mixin ProductsModel on ConnectedProductsModel {
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
-      }).catchError((error) {
+    }).catchError((error) {
       _isLoading = false;
       notifyListeners();
       return;

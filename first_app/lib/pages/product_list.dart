@@ -24,6 +24,23 @@ class _ProductListPageState extends State<ProductListPage> {
     super.initState();
   }
   
+  Widget _buildEditButton(
+      BuildContext context, int index, MainModel model) {
+    return IconButton(
+      icon: Icon(Icons.edit),
+      onPressed: () {
+        model.selectProduct(model.allProducts[index].id);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ProductEditPage();
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
@@ -31,7 +48,7 @@ class _ProductListPageState extends State<ProductListPage> {
         return ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
-              key: Key(model.allProducts[index].toString()),
+              key: Key(model.allProducts[index].title),
               onDismissed: (DismissDirection direction) {
                 if (direction == DismissDirection.endToStart) {
                   model.selectProduct(model.allProducts[index].id);
@@ -39,7 +56,7 @@ class _ProductListPageState extends State<ProductListPage> {
                 } else if (direction == DismissDirection.startToEnd) {
                   print('Swiped start to end');
                 } else {
-                  print('other swiping');
+                  print('Other swiping');
                 }
               },
               background: Container(
@@ -66,20 +83,5 @@ class _ProductListPageState extends State<ProductListPage> {
     );
   }
 
-  Widget _buildEditButton(
-      BuildContext context, int index, MainModel model) {
-    return IconButton(
-      icon: Icon(Icons.edit),
-      onPressed: () {
-        model.selectProduct(model.allProducts[index].id);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return ProductEditPage();
-            },
-          ),
-        );
-      },
-    );
-  }
+  
 }
