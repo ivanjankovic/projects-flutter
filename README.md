@@ -7,16 +7,15 @@ codelabs.developers.google.com
 
 Dart and Flutter The Complete Developer's Guide Course by `Stephen Grider` on Udemy ```last completed: Section 16 - RxDart for Reactive Programming```
 
-Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last completed: Section 12 - Lesson 5 Getting Data form the server```
+Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last completed: Section 12 - Lesson 9 Updating products```
 
 
 section:durations
-11:138
-12:123
-13:140
-14:120
-15:126
-16:73
+
+13 Authentication:140 =>
+14 Adding Google Maps to our App:120
+15 Accessing the Device Camera:126
+16 Adding Animations to our Project:73
 17:46
 18:22
 19:35

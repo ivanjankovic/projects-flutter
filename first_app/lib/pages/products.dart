@@ -52,7 +52,7 @@ class _ProductsPageState extends State<ProductsPage> {
             child: CircularProgressIndicator(),
           );
         }
-        return content;
+        return RefreshIndicator(onRefresh: model.fetchProducts, child: content);
       },
     );
   }
