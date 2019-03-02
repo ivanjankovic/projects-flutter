@@ -226,6 +226,35 @@ mixin UserModel on ConnectedProductsModel {
       password: password,
     );
   }
+
+  Future<Map<String, dynamic>> signup(String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> authData = {
+      'email': email,
+      'password': password,
+      'returnSecureToken': true,
+    };
+    final http.Response response = await http.post(
+      'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAOyIu6qAiq3EGlBgWlC74eEnfDSSJMsis',
+      body: json.encode(authData),
+      headers: {'Content-Type': 'application/json'},
+    );
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    bool hasError = true;
+    String message = 'Something went wrong';
+
+    if (responseData.containsKey('idToken')) {
+      hasError = false;
+      message = 'Authentication succeeded!';
+    } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
+      message = 'This email already exists.';
+    }
+    print(json.decode(response.body));
+    _isLoading = false;
+    notifyListeners();
+    return {'success': !hasError, 'message': message};
+  }
 }
 
 mixin UtilityModel on ConnectedProductsModel {
