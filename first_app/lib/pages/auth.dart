@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../scoped-models/main.dart';
-
-enum AuthMode { Signup, Login }
+import '../models/auth.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -67,7 +66,7 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-Widget _buildPasswordConfirmTextField() {
+  Widget _buildPasswordConfirmTextField() {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Confirm Password', filled: true, fillColor: Colors.white),
@@ -92,36 +91,34 @@ Widget _buildPasswordConfirmTextField() {
     );
   }
 
-  void _submitForm(Function login, Function signup) async {
+  void _submitForm(Function authenticate) async {
     if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
     _formKey.currentState.save();
-    if (_authMode == AuthMode.Login) {
-      login(_formData['email'], _formData['password']);
+    Map<String, dynamic> successInformation;
+      successInformation =
+          await authenticate(_formData['email'], _formData['password'], _authMode);
+    if (successInformation['success']) {
+      Navigator.pushReplacementNamed(context, '/products');
     } else {
-      final Map<String, dynamic> successInformation =
-          await signup(_formData['email'], _formData['password']);
-      if (successInformation['success']) {
-        Navigator.pushReplacementNamed(context, '/products');
-      } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('An Error Occurred!'),
-                content: Text(successInformation['message']),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Okay'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
-      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('An Error Occurred!'),
+            content: Text(successInformation['message']),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -180,7 +177,7 @@ Widget _buildPasswordConfirmTextField() {
                                     ? 'LOGIN'
                                     : 'SIGNUP'),
                                 onPressed: () =>
-                                    _submitForm(model.login, model.signup),
+                                    _submitForm(model.authenticate),
                               );
                       },
                     ),
