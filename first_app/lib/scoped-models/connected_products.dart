@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -144,7 +145,7 @@ mixin ProductsModel on ConnectedProductsModel {
     notifyListeners();
     return http
         .delete(
-            'https://products-flutter-course-ms.firebaseio.com/products/${deletedProductId}.json?auth=${_authenticatedUser.token}')
+            'https://products-flutter-course-ms.firebaseio.com/products/$deletedProductId.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
       _isLoading = false;
       notifyListeners();
@@ -223,9 +224,14 @@ mixin ProductsModel on ConnectedProductsModel {
 
 mixin UserModel on ConnectedProductsModel {
   Timer _authTimer;
+  PublishSubject<bool> _userSubject = PublishSubject();
 
   User get user {
     return _authenticatedUser;
+  }
+
+  PublishSubject<bool> get userSubject {
+    return _userSubject;
   }
 
   Future<Map<String, dynamic>> authenticate(String email, String password,
@@ -265,6 +271,7 @@ mixin UserModel on ConnectedProductsModel {
         token: responseData['idToken'],
       );
       setAuthTimeout(int.parse(responseData['expiresIn']));
+      _userSubject.add(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
       final DateTime expiryTime =
@@ -301,6 +308,7 @@ mixin UserModel on ConnectedProductsModel {
       final String userId = prefs.getString('userId');
       final int tokenLifspan = paresedExpiryTime.difference(now).inSeconds;
       _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      _userSubject.add(true);
       setAuthTimeout(tokenLifspan);
       notifyListeners();
     }
@@ -317,7 +325,10 @@ mixin UserModel on ConnectedProductsModel {
   }
 
   void setAuthTimeout(int time) {
-    _authTimer = Timer(Duration(milliseconds: time), logout);
+    _authTimer = Timer(Duration(milliseconds: time * 2), () {
+      logout();
+      _userSubject.add(false);
+    });
   }
 }
 
