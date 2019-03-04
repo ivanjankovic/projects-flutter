@@ -97,8 +97,8 @@ class _AuthPageState extends State<AuthPage> {
     }
     _formKey.currentState.save();
     Map<String, dynamic> successInformation;
-      successInformation =
-          await authenticate(_formData['email'], _formData['password'], _authMode);
+    successInformation = await authenticate(
+        _formData['email'], _formData['password'], _authMode);
     if (successInformation['success']) {
       Navigator.pushReplacementNamed(context, '/products');
     } else {

@@ -17,15 +17,13 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
-  
   @override
   void initState() {
     widget.model.fetchProducts();
     super.initState();
   }
-  
-  Widget _buildEditButton(
-      BuildContext context, int index, MainModel model) {
+
+  Widget _buildEditButton(BuildContext context, int index, MainModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
@@ -67,7 +65,8 @@ class _ProductListPageState extends State<ProductListPage> {
                   backgroundImage: NetworkImage(model.allProducts[index].image),
                 ),
                 title: Text(model.allProducts[index].title),
-                subtitle: Text('\$${model.allProducts[index].price.toString()}'),
+                subtitle:
+                    Text('\$${model.allProducts[index].price.toString()}'),
                 trailing: _buildEditButton(context, index, model),
               ),
             );
@@ -82,6 +81,4 @@ class _ProductListPageState extends State<ProductListPage> {
       },
     );
   }
-
-  
 }

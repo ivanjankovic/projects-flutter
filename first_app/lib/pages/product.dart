@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:scoped_model/scoped_model.dart';
 
 import '../widgets/ui_elements/title_default.dart';
