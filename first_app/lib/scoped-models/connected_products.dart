@@ -157,7 +157,7 @@ mixin ProductsModel on ConnectedProductsModel {
     });
   }
 
-  Future<Null> fetchProducts() {
+  Future<Null> fetchProducts({onlyForUser = false}) {
     _isLoading = true;
     notifyListeners();
     return http
@@ -180,12 +180,16 @@ mixin ProductsModel on ConnectedProductsModel {
           price: productData['price'],
           userEmail: productData['userEmail'],
           userId: productData['userId'],
-          isFavorite: productData['wishlistUsers'] == null ? false : (productData['wishlistUsers'] as Map<String, dynamic>)
-              .containsKey(_authenticatedUser.id),
+          isFavorite: productData['wishlistUsers'] == null
+              ? false
+              : (productData['wishlistUsers'] as Map<String, dynamic>)
+                  .containsKey(_authenticatedUser.id),
         );
         fetchedProductList.add(product);
       });
-      _products = fetchedProductList;
+      _products = fetchedProductList.where((Product product) {
+        return product.userId == _authenticatedUser.id;
+      }).toList();
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
@@ -214,7 +218,8 @@ mixin ProductsModel on ConnectedProductsModel {
     http.Response response;
     if (newFavoriteStatus) {
       response = await http.put(
-          'https://products-flutter-course-ms.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}');
+          'https://products-flutter-course-ms.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}',
+          body: json.encode(true));
     } else {
       response = await http.delete(
           'https://products-flutter-course-ms.firebaseio.com/products/${selectedProduct.id}/wishlistUsers/${_authenticatedUser.id}.json?auth=${_authenticatedUser.token}');
@@ -296,10 +301,10 @@ mixin UserModel on ConnectedProductsModel {
       );
       setAuthTimeout(int.parse(responseData['expiresIn']));
       _userSubject.add(true);
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       final DateTime now = DateTime.now();
       final DateTime expiryTime =
           now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', responseData['idToken']);
       prefs.setString('userEmail', email);
       prefs.setString('userId', responseData['localId']);
@@ -322,18 +327,18 @@ mixin UserModel on ConnectedProductsModel {
     final String expiryTimeString = prefs.getString('expiryTime');
     if (token != null) {
       final DateTime now = DateTime.now();
-      final paresedExpiryTime = DateTime.parse(expiryTimeString);
-      if (paresedExpiryTime.isBefore(now)) {
+      final parsedExpiryTime = DateTime.parse(expiryTimeString);
+      if (parsedExpiryTime.isBefore(now)) {
         _authenticatedUser = null;
         notifyListeners();
         return;
       }
       final String userEmail = prefs.getString('userEmail');
       final String userId = prefs.getString('userId');
-      final int tokenLifspan = paresedExpiryTime.difference(now).inSeconds;
+      final int tokenLifespan = parsedExpiryTime.difference(now).inSeconds;
       _authenticatedUser = User(id: userId, email: userEmail, token: token);
       _userSubject.add(true);
-      setAuthTimeout(tokenLifspan);
+      setAuthTimeout(tokenLifespan);
       notifyListeners();
     }
   }
