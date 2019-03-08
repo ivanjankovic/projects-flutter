@@ -9,7 +9,6 @@ Dart and Flutter The Complete Developer's Guide Course by `Stephen Grider` on Ud
 
 Learn Flutter & Dart to Build iOS & Android Apps Course by `Maximilian Schwarzmüller` on Udemy ```last completed: Section 13```
 
-
 section:durations
 
 13 Authentication: 140 => 9H20min
@@ -23,6 +22,9 @@ section:durations
 ________
 
 ## projects-flutter
+
+TensorFlow & Flutter
+https://blog.francium.tech/real-time-object-detection-on-mobile-with-flutter-tensorflow-lite-and-yolo-android-part-a0042c9b62c6
 
 Add Firebase to Your Android Project
 https://firebase.google.com/docs/android/setup#add_the_sdk
