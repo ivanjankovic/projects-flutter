@@ -31,6 +31,9 @@ https://firebase.google.com/docs/android/setup#add_the_sdk
 https://pub.dartlang.org/packages/cloud_firestore
 
 ## flutter & firebase
+Push notifications with Firebase messaging - Flutter
+https://www.youtube.com/watch?v=wjJN1C9UxpY
+
 https://www.youtube.com/watch?v=prlK_QL_qOA
 https://www.youtube.com/watch?v=5v3n8bCrpv0&index=2&list=PLgGjX33Qsw-Ha_8ks9im86sLIihimuYrr
 
@@ -45,6 +48,12 @@ https://github.com/brianegan/flutter_architecture_samples
 https://github.com/Solido/awesome-flutter
 
 ## recreate, examine the code of this app
+https://github.com/andreicorpo/ouija-quiz-game
+https://github.com/putraxor/kalium_wallet_flutter
+https://github.com/putraxor/flutter_desktop_launcher
+https://github.com/putraxor/firestore-flutter
+https://github.com/putraxor/flutter-book-app
+https://github.com/putraxor/flutter-login-ui
 https://github.com/jhomlala/feather
 https://github.com/2d-inc/Flare-Flutter/tree/master/example/teddy
 https://medium.com/flutter-community/bmi-calculator-in-flutter-part-5-animated-slider-hint-1aa55ae44ba0
