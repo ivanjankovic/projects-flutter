@@ -37,6 +37,9 @@ https://www.youtube.com/watch?v=wjJN1C9UxpY
 https://www.youtube.com/watch?v=prlK_QL_qOA
 https://www.youtube.com/watch?v=5v3n8bCrpv0&index=2&list=PLgGjX33Qsw-Ha_8ks9im86sLIihimuYrr
 
+## youtubbe short toots
+https://www.youtube.com/watch?v=MhQI-ysRyrk
+
 ## firebase course
 https://classroom.udacity.com/courses/ud0352
 
@@ -46,6 +49,9 @@ https://github.com/brianegan/flutter_architecture_samples
 
 ## more resaurces
 https://github.com/Solido/awesome-flutter
+
+## youtube follow along
+https://www.youtube.com/watch?v=2RcmXJpX3Ys 
 
 ## recreate, examine the code of this app
 https://github.com/andreicorpo/ouija-quiz-game
